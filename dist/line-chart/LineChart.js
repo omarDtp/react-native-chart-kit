@@ -32,7 +32,9 @@ var __assign =
       function (t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
           s = arguments[i]
-          for (var p in s) { if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p] }
+          for (var p in s) {
+            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p]
+          }
         }
         return t
       }
@@ -41,9 +43,13 @@ var __assign =
 var __spreadArrays =
   (this && this.__spreadArrays) ||
   function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) { s += arguments[i].length }
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) {
+      s += arguments[i].length
+    }
     for (var r = Array(s), k = 0, i = 0; i < il; i++) {
-      for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) { r[k] = a[j] }
+      for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) {
+        r[k] = a[j]
+      }
     }
     return r
   }
@@ -475,33 +481,34 @@ var LineChart = /** @class */ (function (_super) {
       }
       return ['M' + x(0) + ',' + y(0)]
         .concat(
-          dataset.data
-            .slice(0, -1)
-            .filter((i) => !i)
-            .map(function (_, i) {
-              var x_mid = (x(i) + x(i + 1)) / 2
-              var y_mid = (y(i) + y(i + 1)) / 2
-              var cp_x1 = (x_mid + x(i)) / 2
-              var cp_x2 = (x_mid + x(i + 1)) / 2
-              return (
-                'Q ' +
-                cp_x1 +
+          dataset.data.map(function (_, i) {
+            var x_mid =
+              (x(i) + x(dataset.data[i + 1] !== null ? i + 1 : i)) / 2
+            var y_mid =
+              (y(i) + y(dataset.data[i + 1] !== null ? i + 1 : i)) / 2
+            var cp_x1 = (x_mid + x(i)) / 2
+            var cp_x2 =
+              (x_mid + x(dataset.data[i + 1] !== null ? i + 1 : i)) / 2
+            if (!_) return ''
+            return (
+              'Q ' +
+              cp_x1 +
+              ', ' +
+              y(i) +
+              ', ' +
+              x_mid +
+              ', ' +
+              y_mid +
+              (' Q ' +
+                cp_x2 +
                 ', ' +
-                y(i) +
+                y(dataset.data[i + 1] !== null ? i + 1 : i) +
                 ', ' +
-                x_mid +
+                x(dataset.data[i + 1] !== null ? i + 1 : i) +
                 ', ' +
-                y_mid +
-                (' Q ' +
-                  cp_x2 +
-                  ', ' +
-                  y(i + 1) +
-                  ', ' +
-                  x(i + 1) +
-                  ', ' +
-                  y(i + 1))
-              )
-            })
+                y(dataset.data[i + 1] !== null ? i + 1 : i))
+            )
+          })
         )
         .join(' ')
     }
