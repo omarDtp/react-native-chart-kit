@@ -469,12 +469,14 @@ var LineChart = /** @class */ (function (_super) {
         return 'M0,0'
       }
       var datas = _this.getDatas(data)
+
       var x = function (i) {
         return Math.floor(
           paddingRight + (i * (width - paddingRight)) / dataset.data.length
         )
       }
       var baseHeight = _this.calcBaseHeight(datas, height)
+
       var y = function (i) {
         var yHeight = _this.calcHeight(dataset.data[i], datas, height)
         return Math.floor(((baseHeight - yHeight) / 4) * 3 + paddingTop)
@@ -482,15 +484,13 @@ var LineChart = /** @class */ (function (_super) {
       return ['M' + x(0) + ',' + y(0)]
         .concat(
           dataset.data.map(function (_, i) {
-            var x_mid =
-              (x(i) + x(dataset.data[i + 1] !== null ? i + 1 : i)) / 2
-            var y_mid =
-              (y(i) + y(dataset.data[i + 1] !== null ? i + 1 : i)) / 2
+            var i2 = dataset.data[i + 1] !== null ? i + 1 : i
+            var x_mid = (x(i) + x(i2)) / 2
+            var y_mid = (y(i) + y(i2)) / 2
             var cp_x1 = (x_mid + x(i)) / 2
-            var cp_x2 =
-              (x_mid + x(dataset.data[i + 1] !== null ? i + 1 : i)) / 2
+            var cp_x2 = (x_mid + x(i2)) / 2
             if (!_) return ''
-            return (
+            var result =
               'Q ' +
               cp_x1 +
               ', ' +
@@ -499,15 +499,8 @@ var LineChart = /** @class */ (function (_super) {
               x_mid +
               ', ' +
               y_mid +
-              (' Q ' +
-                cp_x2 +
-                ', ' +
-                y(dataset.data[i + 1] !== null ? i + 1 : i) +
-                ', ' +
-                x(dataset.data[i + 1] !== null ? i + 1 : i) +
-                ', ' +
-                y(dataset.data[i + 1] !== null ? i + 1 : i))
-            )
+              (' Q ' + cp_x2 + ', ' + y(i2) + ', ' + x(i2) + ', ' + y(i2))
+            return result
           })
         )
         .join(' ')
