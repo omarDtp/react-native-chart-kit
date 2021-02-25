@@ -171,8 +171,9 @@ var AbstractChart = /** @class */ (function (_super) {
         _d = config.verticalLabelsHeightPercentage,
         verticalLabelsHeightPercentage =
           _d === void 0 ? DEFAULT_X_LABELS_HEIGHT_PERCENTAGE : _d
-      data = data.filter((i) => i !== null)
-
+      data = data.filter((i, index) => i !== null && i !== data[index - 1])
+      data = [...new Set(data)]
+      console.log(data)
       var _e = _this.props,
         _f = _e.yAxisLabel,
         yAxisLabel = _f === void 0 ? '' : _f,
@@ -184,6 +185,7 @@ var AbstractChart = /** @class */ (function (_super) {
         .fill(1)
         .map(function (_, i) {
           var yLabel = String(i * count)
+          count = data.length >= 4 ? 3 : data.length >= 3 ? 2 : 1
           if (count === 1) {
             yLabel =
               '' +

@@ -483,7 +483,7 @@ var LineChart = /** @class */ (function (_super) {
       }
       return ['M' + x(0) + ',' + y(0)]
         .concat(
-          dataset.data.map(function (_, i) {
+          dataset.data.slice(0, -1).map(function (_, i) {
             var i2 = dataset.data[i + 1] !== null ? i + 1 : i
             var x_mid = (x(i) + x(i2)) / 2
             var y_mid = (y(i) + y(i2)) / 2
