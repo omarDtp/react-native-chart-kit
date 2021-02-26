@@ -173,7 +173,7 @@ var AbstractChart = /** @class */ (function (_super) {
           _d === void 0 ? DEFAULT_X_LABELS_HEIGHT_PERCENTAGE : _d
       data = data.filter((i, index) => i !== null && i !== data[index - 1])
       data = [...new Set(data)]
-      console.log(data)
+
       var _e = _this.props,
         _f = _e.yAxisLabel,
         yAxisLabel = _f === void 0 ? '' : _f,
@@ -181,52 +181,58 @@ var AbstractChart = /** @class */ (function (_super) {
         yAxisSuffix = _g === void 0 ? '' : _g,
         _h = _e.yLabelsOffset,
         yLabelsOffset = _h === void 0 ? 12 : _h
-      return new Array(count === 1 ? 1 : count + 1)
-        .fill(1)
-        .map(function (_, i) {
-          var yLabel = String(i * count)
-          count = data.length >= 4 ? 3 : data.length >= 3 ? 2 : 1
-          if (count === 1) {
-            yLabel =
-              '' +
-              yAxisLabel +
-              formatYLabel(data[0].toFixed(decimalPlaces)) +
-              yAxisSuffix
-          } else {
-            var label = _this.props.fromZero
-              ? (_this.calcScaler(data) / count) * i +
-                Math.min.apply(Math, __spreadArrays(data, [0]))
-              : (_this.calcScaler(data) / count) * i +
-                Math.min.apply(Math, data)
-            yLabel =
-              '' +
-              yAxisLabel +
-              formatYLabel(label.toFixed(decimalPlaces)) +
-              yAxisSuffix
-          }
-          var basePosition = height * verticalLabelsHeightPercentage
-          var x = paddingRight - yLabelsOffset
-          var y =
-            count === 1 && _this.props.fromZero
-              ? paddingTop + 4
-              : height * verticalLabelsHeightPercentage -
-                (basePosition / count) * i +
-                paddingTop
-          return (
-            <Text
-              rotation={horizontalLabelRotation}
-              origin={x + ', ' + y}
-              key={Math.random()}
-              x={x}
-              textAnchor='end'
-              y={y}
-              {..._this.getPropsForLabels()}
-              {..._this.getPropsForHorizontalLabels()}
-            >
-              {yLabel}
-            </Text>
-          )
-        })
+
+      // count = data.length >= 4 ? 4 : data.length >= 3 ? 3 : 2
+      // console.log(new Array(count == 1 ? 1 : count).fill(2))
+      return new Array(count + 1).fill(1).map(function (_, i) {
+        var yLabel = String(i * count)
+        const label = _this.props.fromZero
+          ? (_this.calcScaler(data) / count) * i + Math.min(...data, 0)
+          : (_this.calcScaler(data) / count) * i + Math.min(...data)
+        yLabel = `${yAxisLabel}${formatYLabel(
+          label.toFixed(decimalPlaces)
+        )}${yAxisSuffix}`
+        if (count === 1) {
+          // yLabel =
+          //   '' +
+          //   yAxisLabel +
+          //   formatYLabel(data[0].toFixed(decimalPlaces)) +
+          //   yAxisSuffix
+        } else {
+          // var label = _this.props.fromZero
+          //   ? (_this.calcScaler(data) / count) * i +
+          //     Math.min.apply(Math, __spreadArrays(data, [0]))
+          //   : (_this.calcScaler(data) / count) * i +
+          //     Math.min.apply(Math, data)
+          // yLabel =
+          //   '' +
+          //   yAxisLabel +
+          //   formatYLabel(label.toFixed(decimalPlaces)) +
+          //   yAxisSuffix
+        }
+        var basePosition = height * verticalLabelsHeightPercentage
+        var x = paddingRight - yLabelsOffset
+        var y =
+          count === 1 && _this.props.fromZero
+            ? paddingTop + 4
+            : height * verticalLabelsHeightPercentage -
+              (basePosition / count) * i +
+              paddingTop
+        return (
+          <Text
+            rotation={horizontalLabelRotation}
+            origin={x + ', ' + y}
+            key={Math.random()}
+            x={x}
+            textAnchor='end'
+            y={y}
+            {..._this.getPropsForLabels()}
+            {..._this.getPropsForHorizontalLabels()}
+          >
+            {yLabel}
+          </Text>
+        )
+      })
     }
     _this.renderVerticalLabels = function (_a) {
       var _b = _a.labels,
