@@ -190,7 +190,7 @@ var AbstractChart = /** @class */ (function (_super) {
           ? (_this.calcScaler(data) / count) * i + Math.min(...data, 0)
           : (_this.calcScaler(data) / count) * i + Math.min(...data)
         yLabel = `${yAxisLabel}${formatYLabel(
-          label.toFixed(decimalPlaces)
+          label % 1 == 0 ? label : label.toFixed(decimalPlaces)
         )}${yAxisSuffix}`
         if (count === 1) {
           // yLabel =
